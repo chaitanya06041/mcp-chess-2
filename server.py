@@ -120,7 +120,11 @@ def get_employee_ids() -> str:
     ids = [emp["id"] for emp in employees]
     return f"Available Employee IDs: {ids}"
 
-if __name__ == "__main__":
+def main():
+    """Entry point for the MCP server."""
     if not os.path.exists(JSON_FILE_PATH):
         write_db([])
     mcp.run()
+
+if __name__ == "__main__":
+    main()

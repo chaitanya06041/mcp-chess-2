@@ -8,3 +8,10 @@ dependencies = [
     "mcp[cli]>=1.26.0",
     "pydantic[email]>=2.12.5",
 ]
+
+[project.scripts]
+employee = "server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
