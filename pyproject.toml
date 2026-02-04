@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-employee = "src.server:main"
+employee = "server:main"
 
 [build-system]
 requires = ["setuptools"]
