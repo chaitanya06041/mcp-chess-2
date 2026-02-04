@@ -64,6 +64,42 @@ def get_employee(employee_id: int) -> str:
     employee = next((e for e in employees if e["id"] == employee_id), None)
     return json.dumps(employee, indent=2) if employee else f"Error: ID {employee_id} not found."
 
+@mcp.tool()
+def update_employee(employee_id: int, name: Optional[str] = None, job_role: Optional[str] = None, 
+                   department: Optional[str] = None, salary: Optional[float] = None) -> str:
+    """Update employee information by ID. Only provided fields will be updated."""
+    employees = read_db()
+    employee = next((e for e in employees if e["id"] == employee_id), None)
+    
+    if not employee:
+        return f"Error: Employee with ID {employee_id} not found."
+    
+    if name is not None:
+        employee["name"] = name
+    if job_role is not None:
+        employee["job_role"] = job_role
+    if department is not None:
+        employee["department"] = department
+    if salary is not None:
+        if salary <= 0:
+            return "Error: Salary must be greater than 0."
+        employee["salary"] = salary
+    
+    write_db(employees)
+    return f"Employee {employee_id} updated successfully."
+
+@mcp.tool()
+def delete_employee(employee_id: int) -> str:
+    """Delete an employee by ID."""
+    employees = read_db()
+    updated_list = [e for e in employees if e["id"] != employee_id]
+    
+    if len(updated_list) == len(employees):
+        return f"Error: Employee with ID {employee_id} not found."
+    
+    write_db(updated_list)
+    return f"Employee {employee_id} deleted successfully."
+
 @mcp.resource("employees://ids")
 def get_employee_ids() -> str:
     """Get a list of all existing employee IDs."""
